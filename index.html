@@ -1,362 +1,130 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>VariedadesEXPRESS - Tienda</title>
-  <meta name="description" content="Calzado deportivo y urbano - Compra vía WhatsApp" />
-  <style>
-    /* --- Reset y estilos básicos --- */
-    :root{--accent:#ff6600;--muted:#666;--bg:#f7f7f7;--card:#fff}
-    *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, Arial, sans-serif;margin:0;background:var(--bg);color:#111}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1100px;margin:0 auto;padding:20px}
-
-    /* --- Header --- */
-    header{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#222,#444);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
-    .promo{background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;font-weight:700}
-
-    /* --- Hero --- */
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center;margin-top:8px}
-    .hero-card{background:var(--card);padding:22px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
-    h1{margin:0 0 8px 0;font-size:28px}
-    p.lead{color:var(--muted);margin:0 0 12px}
-
-    /* --- Countdown --- */
-    .countdown{display:flex;gap:12px;margin-top:12px}
-    .countdown .box{background:#111;color:#fff;padding:10px 14px;border-radius:8px;min-width:64px;text-align:center}
-    .countdown small{display:block;color:#ddd}
-
-    /* --- Carousel --- */
-    .carousel{position:relative;border-radius:12px;overflow:hidden}
-    .slides{display:flex;transition:transform .5s ease}
-    .slide{min-width:100%;height:280px;background-size:cover;background-position:center}
-    .carousel-controls{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:8px}
-    .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.6);cursor:pointer}
-    .dot.active{background:var(--accent)}
-
-    /* --- Catalogo --- */
-    .catalog{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-    .product{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.04);display:flex;flex-direction:column}
-    .product img{width:100%;height:180px;object-fit:cover;border-radius:8px}
-    .product h3{margin:10px 0 6px;font-size:18px}
-    .price{font-weight:800;color:var(--accent)}
-    .meta{color:var(--muted);font-size:13px}
-
-    /* --- Form controls --- */
-    label{font-size:13px;margin-top:8px;display:block}
-    select,input[type=number],input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid #e2e2e2;margin-top:6px}
-    .row{display:flex;gap:10px}
-    .row .col{flex:1}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
-    .btn.ghost{background:transparent;border:1px solid #ddd;color:#111}
-
-    /* --- Footer / Policies --- */
-    footer{margin-top:36px;padding:18px 0;color:var(--muted);font-size:14px}
-    .policies{display:flex;gap:12px;flex-wrap:wrap}
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45)}
-    .modal .dialog{background:#fff;padding:18px;border-radius:10px;max-width:820px;max-height:80vh;overflow:auto}
-
-    /* --- Responsive --- */
-    @media(max-width:880px){.hero{grid-template-columns:1fr;}.carousel .slide{height:220px}}
-
-    /* --- Tiny helpers --- */
-    .small{font-size:13px;color:var(--muted)}
-    .flex{display:flex;gap:8px;align-items:center}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variedades Express</title>
+<style>
+    body {font-family: Arial, sans-serif; margin: 0; padding: 0;}
+    header {background: #ff6600; color: white; text-align: center; padding: 20px;}
+    .carousel {display: flex; overflow: hidden; width: 100%; height: 300px;}
+    .carousel img {width: 100%; flex-shrink: 0;}
+    .promo {background: #f2f2f2; padding: 20px; text-align: center;}
+    .catalogo {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px;}
+    .producto {border: 1px solid #ccc; padding: 10px; text-align: center;}
+    .producto img {width: 100%; height: auto;}
+    .producto button {background: #ff6600; color: white; border: none; padding: 10px; cursor: pointer; margin-top: 10px;}
+    .overlay {position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center;}
+    .formulario {background: white; padding: 20px; width: 90%; max-width: 400px; border-radius: 10px;}
+    .formulario input, .formulario select {width: 100%; padding: 10px; margin-bottom: 10px;}
+    .formulario button {background: #ff6600; color: white; border: none; padding: 10px; width: 100%; cursor: pointer;}
+</style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">VE</div>
-        <div>
-          <div style="font-weight:800">VariedadesEXPRESS</div>
-          <div class="small">Calzado deportivo y urbano • Envíos disponibles</div>
-        </div>
-      </div>
-      <div class="flex">
-        <div class="promo">Promos: 2x1 selecciones limitadas</div>
-      </div>
-    </header>
+<header>
+    <h1>Variedades Express</h1>
+    <p>Calzado original - Adidas, Nike, Puma y más</p>
+</header>
 
-    <section class="hero">
-      <div class="hero-card">
-        <h1>Los mejores tenis al alcance de un clic</h1>
-        <p class="lead">Compra fácilmente, elige talla, color y retíralo en oficina o pide envío a domicilio. Pedidos por WhatsApp.</p>
+<section class="carousel">
+    <img src="img1.jpg" alt="Promo 1">
+    <img src="img2.jpg" alt="Promo 2">
+    <img src="img3.jpg" alt="Promo 3">
+</section>
 
-        <div class="countdown" id="countdown">
-          <div class="box"><div id="d">00</div><small>Días</small></div>
-          <div class="box"><div id="h">00</div><small>Horas</small></div>
-          <div class="box"><div id="m">00</div><small>Min</small></div>
-          <div class="box"><div id="s">00</div><small>Seg</small></div>
-        </div>
+<section class="promo">
+    <h2>¡Promoción por tiempo limitado!</h2>
+    <p>Obtén descuentos especiales en toda la tienda</p>
+    <div id="contador"></div>
+</section>
 
-        <div style="margin-top:14px">
-          <button class="btn" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Ver Catálogo</button>
-          <button class="btn ghost" onclick="openModal('policies')">Políticas & Términos</button>
-        </div>
-
-        <p class="small" style="margin-top:12px">Contacto: <strong>+57 321 673 2606</strong> • correo: <a href="mailto:variedadesexpressym@gmail.com">variedadesexpressym@gmail.com</a></p>
-      </div>
-
-      <div class="hero-card">
-        <div class="carousel" id="carousel">
-          <div class="slides" id="slides">
-            <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?w=1200&q=80')"></div>
-            <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1528701800489-476b1bdf9e8b?w=1200&q=80')"></div>
-            <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1520975910770-0a6b7f0f5eec?w=1200&q=80')"></div>
-          </div>
-          <div class="carousel-controls" id="dots"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="catalogo">
-      <h2 style="margin-top:26px">Catálogo destacado</h2>
-      <div class="catalog" id="productGrid">
-        <!-- Productos generados por JS -->
-      </div>
-    </section>
-
-    <section style="margin-top:24px">
-      <h3>Formulario de Pedido (se abrirá la conversación de WhatsApp con toda la info)</h3>
-      <div class="hero-card">
-        <form id="orderForm" onsubmit="event.preventDefault(); sendWhatsApp()">
-          <div class="row">
-            <div class="col">
-              <label>Nombre completo</label>
-              <input type="text" id="fullname" placeholder="Ej. Juan Pérez" required />
-            </div>
-            <div class="col">
-              <label>Teléfono</label>
-              <input type="text" id="phone" placeholder="Ej. 3211234567" required />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <label>Ciudad</label>
-              <input type="text" id="city" placeholder="Ej. Bogotá" required />
-            </div>
-            <div class="col">
-              <label>Departamento</label>
-              <input type="text" id="region" placeholder="Ej. Cundinamarca" required />
-            </div>
-          </div>
-
-          <label>Barrio</label>
-          <input type="text" id="neighborhood" placeholder="Ej. Chapinero" required />
-
-          <label>Dirección completa</label>
-          <input type="text" id="address" placeholder="Calle 100 # 10-20" required />
-
-          <div class="row">
-            <div class="col">
-              <label>Producto</label>
-              <select id="productSelect" required></select>
-            </div>
-            <div class="col">
-              <label>Talla</label>
-              <select id="sizeSelect" required>
-                <option value="">Seleccione</option>
-                <option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <label>Color</label>
-              <select id="colorSelect" required>
-                <option value="">Seleccione</option>
-              </select>
-            </div>
-            <div class="col">
-              <label>Cantidad de unidades</label>
-              <input type="number" id="qty" min="1" value="1" required />
-            </div>
-          </div>
-
-          <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-            <label style="margin:0"><input type="checkbox" id="pickup" /> Retirar en oficina (ej. INTER RAPIDISIMO)</label>
-          </div>
-
-          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn" type="submit">Enviar pedido por WhatsApp</button>
-            <button class="btn ghost" type="button" onclick="resetForm()">Limpiar</button>
-          </div>
-
-          <p class="small" style="margin-top:8px">Al enviar tu pedido serás redirigido a WhatsApp con un mensaje prellenado a nuestro número <strong>+57 321 673 2606</strong>. También recibirás copia por correo a <a href="mailto:variedadesexpressym@gmail.com">variedadesexpressym@gmail.com</a> si lo deseas.</p>
-        </form>
-      </div>
-    </section>
-
-    <footer>
-      <div class="policies">
-        <a href="#" onclick="openModal('policies')">Política de privacidad</a>
-        <a href="#" onclick="openModal('terms')">Términos y condiciones</a>
-        <a href="#" onclick="openModal('shipping')">Política de envíos y devoluciones</a>
-      </div>
-      <div style="margin-top:12px">© VariedadesEXPRESS - contacto: <a href="mailto:variedadesexpressym@gmail.com">variedadesexpressym@gmail.com</a></div>
-    </footer>
-  </div>
-
-  <!-- Modales de Políticas -->
-  <div id="policies" class="modal">
-    <div class="dialog">
-      <h3>Política de privacidad</h3>
-      <p>Recopilamos los datos necesarios para gestionar tu pedido (nombre, teléfono, dirección). No compartimos tus datos con terceros salvo para realizar el envío. Conservamos la información solo por el tiempo necesario para facturación y atención al cliente.</p>
-      <button class="btn" onclick="closeModal('policies')">Cerrar</button>
+<section class="catalogo">
+    <div class="producto">
+        <img src="tenis1.jpg" alt="Tenis Adidas">
+        <h3>Tenis Adidas</h3>
+        <p>$200.000</p>
+        <button onclick="abrirFormulario('Tenis Adidas')">Comprar</button>
     </div>
-  </div>
-
-  <div id="terms" class="modal">
-    <div class="dialog">
-      <h3>Términos y condiciones</h3>
-      <p>Los precios y promociones están sujetos a disponibilidad. Antes de confirmar el pedido vía WhatsApp revisa talla y color. VariedadesEXPRESS no se hace responsable por errores de selección introducidos por el cliente. Para cambios o devoluciones consulta la política de envíos.</p>
-      <button class="btn" onclick="closeModal('terms')">Cerrar</button>
+    <div class="producto">
+        <img src="tenis2.jpg" alt="Tenis Nike">
+        <h3>Tenis Nike</h3>
+        <p>$220.000</p>
+        <button onclick="abrirFormulario('Tenis Nike')">Comprar</button>
     </div>
-  </div>
+</section>
 
-  <div id="shipping" class="modal">
-    <div class="dialog">
-      <h3>Envíos y devoluciones</h3>
-      <p>Ofrecemos despacho nacional a través de servicios de mensajería y opción de retiro en oficina. Los tiempos de entrega dependen del transportador. Las devoluciones por defecto de fábrica se gestionan dentro de los 7 días siguientes a la entrega.</p>
-      <button class="btn" onclick="closeModal('shipping')">Cerrar</button>
+<div class="overlay" id="overlay">
+    <div class="formulario">
+        <h3>Formulario de Pedido</h3>
+        <input type="text" id="nombre" placeholder="Nombre completo">
+        <input type="text" id="telefono" placeholder="Número de teléfono">
+        <input type="text" id="ciudad" placeholder="Ciudad y departamento">
+        <input type="text" id="barrio" placeholder="Barrio">
+        <input type="text" id="direccion" placeholder="Dirección completa">
+        <select id="color">
+            <option value="">Selecciona color</option>
+            <option value="Blanco">Blanco</option>
+            <option value="Negro">Negro</option>
+            <option value="Rojo">Rojo</option>
+        </select>
+        <select id="talla">
+            <option value="">Selecciona talla</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+        </select>
+        <input type="number" id="cantidad" placeholder="Cantidad" min="1">
+        <select id="entrega">
+            <option value="Domicilio">Entrega a domicilio</option>
+            <option value="Oficina">Entrega en oficina (Interrapidísimo)</option>
+        </select>
+        <button onclick="enviarPedido()">Enviar por WhatsApp</button>
+        <button onclick="cerrarFormulario()">Cancelar</button>
     </div>
-  </div>
+</div>
 
-  <script>
-    // ---------- Datos de ejemplo de productos (puedes editar) ----------
-    const PRODUCTS = [
-      {id:1,title:'Tenis Adidas Runner',price:'$120.000',colors:['Blanco/Azul','Negro/Naranja','Gris/Naranja'],img:'https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?w=900&q=80'},
-      {id:2,title:'Tenis Nike Swift',price:'$98.000',colors:['Blanco/Verde','Azul/Blanco','Negro'],img:'https://images.unsplash.com/photo-1528701800489-476b1bdf9e8b?w=900&q=80'},
-      {id:3,title:'Tenis Puma Urban',price:'$110.000',colors:['Negro/Blanco','Gris/Verde'],img:'https://images.unsplash.com/photo-1520975910770-0a6b7f0f5eec?w=900&q=80'}
-    ];
+<script>
+let overlay = document.getElementById('overlay');
+let productoSeleccionado = '';
 
-    // ---------- Render de productos en catálogo ----------
-    const grid = document.getElementById('productGrid');
-    const prodSel = document.getElementById('productSelect');
-    const colorSel = document.getElementById('colorSelect');
+function abrirFormulario(producto){
+    productoSeleccionado = producto;
+    overlay.style.display = 'flex';
+}
+function cerrarFormulario(){
+    overlay.style.display = 'none';
+}
+function enviarPedido(){
+    let nombre = document.getElementById('nombre').value;
+    let telefono = document.getElementById('telefono').value;
+    let ciudad = document.getElementById('ciudad').value;
+    let barrio = document.getElementById('barrio').value;
+    let direccion = document.getElementById('direccion').value;
+    let color = document.getElementById('color').value;
+    let talla = document.getElementById('talla').value;
+    let cantidad = document.getElementById('cantidad').value;
+    let entrega = document.getElementById('entrega').value;
 
-    function renderProducts(){
-      PRODUCTS.forEach(p=>{
-        const card = document.createElement('div'); card.className='product';
-        card.innerHTML = `
-          <img src="${p.img}" alt="${p.title}" />
-          <h3>${p.title}</h3>
-          <div class="meta">${p.price}</div>
-          <div style="margin-top:8px;display:flex;gap:8px;align-items:center;justify-content:space-between">
-            <button class="btn" onclick="quickSelect(${p.id})">Comprar</button>
-            <button class="btn ghost" onclick="viewDetails(${p.id})">Ver</button>
-          </div>
-        `;
-        grid.appendChild(card);
+    let mensaje = `Pedido:%0AProducto: ${productoSeleccionado}%0ANombre: ${nombre}%0ATeléfono: ${telefono}%0ACiudad: ${ciudad}%0ABarrio: ${barrio}%0ADirección: ${direccion}%0AColor: ${color}%0ATalla: ${talla}%0ACantidad: ${cantidad}%0AEntrega: ${entrega}`;
+    window.open(`https://wa.me/573216732606?text=${mensaje}`, '_blank');
+}
 
-        // añadir al select
-        const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.title + ' - ' + p.price; prodSel.appendChild(opt);
-      });
+// Temporizador de cuenta regresiva
+let fechaFinal = new Date();
+fechaFinal.setHours(fechaFinal.getHours() + 48);
+setInterval(function(){
+    let ahora = new Date().getTime();
+    let distancia = fechaFinal - ahora;
+    if(distancia < 0){
+        document.getElementById('contador').innerHTML = '¡Promoción terminada!';
+        return;
     }
-
-    function quickSelect(id){
-      prodSel.value = id; updateColorOptions(); document.getElementById('sizeSelect').focus(); window.scrollTo({top:document.getElementById('orderForm').offsetTop-20,behavior:'smooth'});
-    }
-    function viewDetails(id){
-      const p = PRODUCTS.find(x=>x.id===id); alert(p.title + "\nPrecio: " + p.price + "\nColores: " + p.colors.join(', '));
-    }
-
-    function updateColorOptions(){
-      const pid = Number(prodSel.value);
-      colorSel.innerHTML = '<option value="">Seleccione</option>';
-      const p = PRODUCTS.find(x=>x.id===pid);
-      if(!p) return;
-      p.colors.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; colorSel.appendChild(o); });
-    }
-
-    prodSel.addEventListener('change', updateColorOptions);
-
-    renderProducts();
-
-    // ---------- Countdown simple (fecha objetivo editable) ----------
-    const targetDate = new Date(); targetDate.setDate(targetDate.getDate() + 7); // promoción: 7 días desde ahora
-    function updateCountdown(){
-      const now=new Date(); const diff=(targetDate-now)/1000;
-      if(diff<=0){document.getElementById('d').textContent='00';document.getElementById('h').textContent='00';document.getElementById('m').textContent='00';document.getElementById('s').textContent='00';clearInterval(cd);return}
-      const days=Math.floor(diff/86400);const hours=Math.floor((diff%86400)/3600);const mins=Math.floor((diff%3600)/60);const secs=Math.floor(diff%60);
-      document.getElementById('d').textContent=String(days).padStart(2,'0');
-      document.getElementById('h').textContent=String(hours).padStart(2,'0');
-      document.getElementById('m').textContent=String(mins).padStart(2,'0');
-      document.getElementById('s').textContent=String(secs).padStart(2,'0');
-    }
-    updateCountdown(); const cd=setInterval(updateCountdown,1000);
-
-    // ---------- Carousel simple ----------
-    const slides = document.getElementById('slides');
-    const dots = document.getElementById('dots');
-    let current=0;
-    function setupCarousel(){
-      const total = slides.children.length;
-      for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0? ' active':'');d.onclick=(()=>goTo(i));dots.appendChild(d)}
-      setInterval(()=>goTo((current+1)%slides.children.length),4000);
-    }
-    function goTo(i){current=i;slides.style.transform=`translateX(-${i*100}%)`;Array.from(dots.children).forEach((d,idx)=>d.className='dot'+(idx===i? ' active':''));}
-    setupCarousel();
-
-    // ---------- Modal helpers ----------
-    function openModal(id){document.getElementById(id).style.display='flex'}
-    function closeModal(id){document.getElementById(id).style.display='none'}
-
-    // ---------- WhatsApp order sending ----------
-    function sendWhatsApp(){
-      const full = document.getElementById('fullname').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const city = document.getElementById('city').value.trim();
-      const region = document.getElementById('region').value.trim();
-      const neighborhood = document.getElementById('neighborhood').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const prodId = Number(document.getElementById('productSelect').value);
-      const prod = PRODUCTS.find(x=>x.id===prodId);
-      const size = document.getElementById('sizeSelect').value;
-      const color = document.getElementById('colorSelect').value;
-      const qty = document.getElementById('qty').value;
-      const pickup = document.getElementById('pickup').checked;
-
-      if(!full||!phone||!city||!address||!prod||!size||!color||!qty){alert('Por favor completa todos los campos del formulario.');return}
-
-      // construir mensaje
-      const lines = [];
-      lines.push('*Nuevo pedido desde VariedadesEXPRESS*');
-      lines.push('Cliente: '+full);
-      lines.push('Teléfono: '+phone);
-      lines.push('Ciudad: '+city);
-      lines.push('Departamento: '+region);
-      lines.push('Barrio: '+neighborhood);
-      lines.push('Dirección: '+address);
-      lines.push('Producto: '+prod.title+' ('+prod.price+')');
-      lines.push('Cantidad: '+qty);
-      lines.push('Talla: '+size);
-      lines.push('Color: '+color);
-      lines.push('Retirar en oficina: '+(pickup? 'Sí (INTER RAPIDISIMO)':'No'));
-
-      const message = encodeURIComponent(lines.join('\n'));
-      const waNum = '+573216732606'; // número destino
-      const waUrl = `https://wa.me/${waNum.replace(/\D/g,'')}?text=${message}`;
-
-      // abrir WhatsApp
-      window.open(waUrl,'_blank');
-
-      // opción: enviar correo con copia
-      // crear mailto (opcional)
-      // const mailto = `mailto:variedadesexpressym@gmail.com?subject=${encodeURIComponent('Nuevo pedido - '+full)}&body=${message}`;
-      // window.open(mailto);
-    }
-
-    function resetForm(){document.getElementById('orderForm').reset(); prodSel.selectedIndex=0; colorSel.innerHTML='<option value="">Seleccione</option>';}
-
-  </script>
+    let horas = Math.floor((distancia % (1000*60*60*24))/(1000*60*60));
+    let minutos = Math.floor((distancia % (1000*60*60))/(1000*60));
+    let segundos = Math.floor((distancia % (1000*60))/1000);
+    document.getElementById('contador').innerHTML = horas+'h '+minutos+'m '+segundos+'s';
+}, 1000);
+</script>
 </body>
 </html>
